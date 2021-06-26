@@ -8,18 +8,19 @@ const getTime = () => {
 
 const kafka = new Kafka({
 	clientId: 'Prism',
-	brokers: ['localhost:9092'],
+	brokers: ['localhost:9092']
 })
 
 const producer = kafka.producer()
 const consumer = kafka.consumer({
-	groupId: 'general-purpose-3',
+	groupId: 'general-purpose-3'
 })
 
-await producer.connect()
-await consumer.connect()
-
-await consumer.subscribe({ topic: 'general-forth', fromBeginning: true })
+await Promise.all([
+	producer.connect(),
+	consumer.connect(),
+	consumer.subscribe({ topic: 'general-forth', fromBeginning: true })
+])
 
 await consumer
 	.run({
@@ -27,7 +28,7 @@ await consumer
 			console.log({
 				partition,
 				offset: message.offset,
-				value: message.value.toString(),
+				value: message.value.toString()
 			})
 
 			await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -36,11 +37,11 @@ await consumer
 				topic: 'general-back',
 				messages: [
 					{
-						value: getTime(),
-					},
-				],
+						value: getTime()
+					}
+				]
 			})
-		},
+		}
 	})
 	.catch((err) => {
 		console.warn('Err:', err)

@@ -28,7 +28,7 @@ async fn main() {
         FutureRecord::to("general-forth")
             .key("test")
             .payload("Hello From Rust"),
-            Duration::from_secs(3)
+            Duration::from_secs(5)
     )
         .await
         .expect("Unable to send message");
@@ -46,21 +46,24 @@ async fn main() {
         .expect("Can't subscribe");
 
     let mut stream = consumer.stream();
-    let next_message = stream.next().await;
+    
+    loop {
+        let next_message = stream.next().await;
 
-    match next_message.unwrap() {
-        Ok(message) => {
-            println!(
-                "Response: {}", 
-                String::from_utf8_lossy(
-                    message
-                        .payload()
-                        .unwrap_or("Error serializing".as_bytes())
-                )
-            );
-        },
-        Err(error) => {
-            println!("Consumer Error: {}", error);
+        match next_message.unwrap() {
+            Ok(message) => {
+                println!(
+                    "Response: {}", 
+                    String::from_utf8_lossy(
+                        message
+                            .payload()
+                            .unwrap_or("Error serializing".as_bytes())
+                    )
+                );
+            },
+            Err(error) => {
+                println!("Consumer Error: {}", error);
+            }
         }
     }
 }
