@@ -9,8 +9,8 @@ This project assume that client already have [Apache Kafka](https://kafka.apache
 - [Kafka](https://kafka.apache.org/)
 
 ### Client:
-- Rust: Using ![rust-rdkafka](https://github.com/fede1024/rust-rdkafka)
-- Node.js: Using ![kafkajs](https://kafka.js.org)
+- Rust: Using [rust-rdkafka](https://github.com/fede1024/rust-rdkafka)
+- Node.js: Using [kafkajs](https://kafka.js.org)
 
 ### Project Structure:
 - Producer (Rust)
